@@ -1,24 +1,51 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+// src/main.js
+import axios from 'axios';
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+const API_URL = 'https://api.api-ninjas.com/v1/motorcycles';
+const API_KEY = 'tu_api_key_aqui'; // Reemplaza con tu API Key
 
-setupCounter(document.querySelector('#counter'))
+// Función para obtener los datos de las motocicletas
+const fetchMotorcycles = async () => {
+  try {
+    const response = await axios.get(API_URL, {
+      headers: {
+        'X-Api-Key': API_KEY,
+      },
+    });
+    console.log('Datos de motocicletas:', response.data); // Mostrar los datos en consola
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching motorcycles:', error);
+    return [];
+  }
+};
+
+// Función para mostrar las motocicletas en el HTML
+const displayMotorcycles = async () => {
+  const motorcycles = await fetchMotorcycles();
+  const listContainer = document.getElementById('motorcycle-list');
+  listContainer.innerHTML = ''; // Limpiar la lista antes de agregarla
+
+  if (motorcycles.length === 0) {
+    listContainer.innerHTML = '<p>No se encontraron motocicletas.</p>';
+    return;
+  }
+
+  motorcycles.forEach((motorcycle) => {
+    const listItem = document.createElement('li');
+    listItem.classList.add('motorcycle-item');
+
+    listItem.innerHTML = `
+      <h3>${motorcycle.model}</h3>
+      <p>Fabricante: ${motorcycle.manufacturer}</p>
+      <p>Motor: ${motorcycle.engine}</p>
+      <p>Año: ${motorcycle.year}</p>
+    `;
+    
+    listContainer.appendChild(listItem);
+  });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  displayMotorcycles();
+});
