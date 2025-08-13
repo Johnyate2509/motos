@@ -1,8 +1,8 @@
 // src/main.js
 import axios from 'axios';
 
-const API_URL = 'https://api.api-ninjas.com/v1/motorcycles';
-const API_KEY = 'tu_api_key_aqui'; // Reemplaza con tu API Key
+const API_URL = 'https://api.api-ninjas.com/v1/motorcycles?make=Kawasaki&model=Ninja';
+const API_KEY = 'BhZRWNBdkYt5z+z0QGTdSw==CYyxpPKuRUCqme3J'; // Reemplaza con tu API Key
 
 // Función para obtener los datos de las motocicletas
 const fetchMotorcycles = async () => {
